@@ -1,0 +1,111 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Employees</title>
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+    <!-- Import css-->
+    <div th:insert="~{../fragments/style-sheets :: styleSheets}"></div>
+
+
+</head>
+<body>
+
+<!-- TopNav Fragment-->
+<header id="topMenu" th:insert="../fragments/topnav :: topnav"></header>
+<main role="main" class="container mt-5 pt-5">
+
+    <table id="employeeListTable" class="table table-striped hover order-column table-borderless">
+        <thead class="table-dark">
+            <tr>
+                <th>Employee number</th>
+                <th>First name</th>
+                <th>Last name</th>
+                <th>Email</th>
+                <th>Mobile</th>
+                <th>Social media</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="employee : ${employeeList}">
+                <td th:text="${employee?.employeeNumber}">employee number</td>
+                <td th:text="${employee?.firstName}">First Name</td>
+                <td th:text="${employee?.lastName}">Last Name</td>
+                <td th:text="${employee?.contactDetails?.email}">Email</td>
+                <td th:text="${employee?.contactDetails?.mobile}">Mobile</td>
+                <td>
+                    <a th:if="${employee?.socialMediaAddress?.twitter}" th:href="${'https://twitter.com/'+employee?.socialMediaAddress?.twitter}" target="_blank"><img src="https://img.icons8.com/fluency/30/000000/twitter.png"/></a>
+                    <a th:if="${employee?.socialMediaAddress?.instagram}" th:href="${'https://www.instagram.com/'+employee?.socialMediaAddress?.instagram}" target="_blank"><img src="https://img.icons8.com/fluency/30/000000/instagram-new.png"/></a>
+                    <a th:if="${employee?.socialMediaAddress?.facebook}" th:href="${'https://www.facebook.com/'+employee?.socialMediaAddress?.facebook}" target="_blank"><img src="https://img.icons8.com/fluency/30/000000/facebook.png"/></a>
+                </td>
+                <td>
+                    <a th:href="@{'/edit/' + ${employee.id}}">Edit</a>
+                    <a th:href="@{'/delete/' + ${employee.id}}">Delete</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+</main>
+
+<!-- Import css-->
+<div th:insert="~{../fragments/scripts :: scripts}"></div>
+
+<script th:inline="javascript">
+
+    (function() {
+        'use strict';
+        window.addEventListener('load', function() {
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            var forms = document.getElementsByClassName('needs-validation');
+            // Loop over them and prevent submission
+            var validation = Array.prototype.filter.call(forms, function(form) {
+                form.addEventListener('submit', function(event) {
+                    if (form.checkValidity() === false) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        }, false);
+    })();
+
+    $(document).ready(function () {
+
+        //datatable
+        var table = $("#employeeListTable").DataTable({
+            "paging": true,
+            "ordering": true,
+            "info": false,
+            "searching": true,
+            pagingType: "full_numbers",
+            colReorder: true,
+            order: [],                      // Default ordering state, ie, dont order on initialisation -->
+            orderMulti: true,               // true = default value. Shift click to order by multiple columns
+            // keys: true,                     // Enables keyboard (arrow key, PgUp, PgDown, etc) navigation of the table, much like Excel
+            dom: '<iftip>',
+
+            // columnDefs: [
+            //     { width: 200, targets: 0 },
+            //     { width: 200, targets: 1 },
+            //     { width: 200, targets: 2 },
+            //     { width: 200, targets: 3 },
+            //     { width: 200, targets: 4 },
+            //     { width: 200, targets: 5 },
+            //     { width: 200, targets: 6 },
+            //     { width: 'auto', targets: 7 },
+            // ],
+
+            // "scrollY":        "400px",
+            // "scrollCollapse": false,
+            // "paging":         false
+        });
+
+    });
+</script>
+
+</body>
+</html>
