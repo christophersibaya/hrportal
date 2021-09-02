@@ -1,11 +1,13 @@
 package com.sars.hrportal.Dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class SocialMediaAddressDto {
 
-    private Long employee_id;
+    @JsonProperty("employee_id")
+    private Long employeeId;
     private String twitter;
     private String instagram;
     private String facebook;
@@ -13,19 +15,19 @@ public class SocialMediaAddressDto {
     public SocialMediaAddressDto() {
     }
 
-    public SocialMediaAddressDto(Long employee_id, String twitter, String instagram, String facebook) {
-        this.employee_id = employee_id;
+    public SocialMediaAddressDto(Long employeeId, String twitter, String instagram, String facebook) {
+        this.employeeId = employeeId;
         this.twitter = twitter;
         this.instagram = instagram;
         this.facebook = facebook;
     }
 
-    public long getEmployee_id() {
-        return employee_id;
+    public Long getEmployeeId() {
+        return employeeId;
     }
 
-    public void setEmployee_id(Long employee_id) {
-        this.employee_id = employee_id;
+    public void setEmployeeId(Long employeeId) {
+        this.employeeId = employeeId;
     }
 
     public String getTwitter() {
@@ -55,7 +57,7 @@ public class SocialMediaAddressDto {
     @Override
     public String toString() {
         return "SocialMediaAddressDto{" +
-                "employee_id=" + employee_id +
+                "employee_id=" + employeeId +
                 ", twitter='" + twitter + '\'' +
                 ", instagram='" + instagram + '\'' +
                 ", facebook='" + facebook + '\'' +

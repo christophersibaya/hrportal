@@ -1,0 +1,252 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Update employee</title>
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+    <!-- Import css-->
+    <div th:insert="~{../fragments/style-sheets :: styleSheets}"></div>
+
+
+</head>
+<body>
+
+<!-- TopNav Fragment-->
+<header id="topMenu" th:insert="../fragments/topnav :: topnav"></header>
+<main role="main" class="container">
+
+    <div class="row mt-3 mb-3">
+        <div class="col-md-12">
+            <h3>Update an employee</h3>
+        </div>
+    </div>
+
+    <form id="updateEmployeeForm" th:action="@{/save-updated-employee}" th:object="${updateEmployee}" method="post" class="needs-validation" novalidate>
+
+        <h3 class="mt-5 grey-text">Personal Details</h3>
+        <div class="row mt-3">
+            <div class="col-md-6 col-sm-6 col-12">
+                <div class="md-form form-group">
+                    <label for="firstName">First name</label>
+                    <input type="text" id="firstName" th:field="*{firstName}" class="form-control form-control" required>
+                    <div class="invalid-feedback">Please provide a name</div>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-6 col-12">
+                <div class="md-form form-group">
+                    <label for="lastName">Last name</label>
+                    <input type="text" id="lastName" th:field="*{lastName}" class="form-control form-control" required>
+                    <div class="invalid-feedback">Please provide a surname</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-3">
+            <div class="col-md-6 col-sm-6 col-12">
+                <div class="md-form form-group">
+                    <input type="text" th:field="*{address.residential}" id="residential" class="form-control" required>
+                    <label for="residential">Residential address</label>
+                    <div class="invalid-feedback">Please provide a residential address</div>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-6 col-12">
+                <div class="md-form form-group">
+                    <input type="text" th:field="*{address.postal}" id="postal" class="form-control" required>
+                    <label for="postal">Postal address</label>
+                    <div class="invalid-feedback">Please provide a postal address</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-3">
+            <div class="col-md-6 col-sm-6 col-12">
+                <div class="md-form form-group">
+                    <label for="email" data-error="wrong" data-success="right">Email address</label>
+                    <input type="email" id="email" th:field="*{contactDetails.email}" class="form-control" required>
+                    <div class="invalid-feedback">Please provide a valid email address.</div>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-6 col-12">
+                <div class="md-form form-group">
+                    <input type="text" th:field="*{contactDetails.mobile}" id="mobile" class="form-control" required>
+                    <label for="mobile">Mobile number</label>
+                    <div class="invalid-feedback">Please provide a mobile number.</div>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-6 col-12">
+                <div class="md-form form-group">
+                    <input type="text" th:field="*{contactDetails.landLine}" id="landLine" class="form-control" required>
+                    <label for="landLine">Land line number</label>
+                    <div class="invalid-feedback">Please provide a land line number.</div>
+                </div>
+            </div>
+        </div>
+
+        <h3 class="mt-5 grey-text">Social media addresses</h3>
+        <div class="row mt-3">
+            <div class="col-md-4 col-sm-6 col-12">
+                <div class="md-form form-group">
+                    <input type="text" th:field="*{socialMediaAddress.twitter}" id="twitter" class="form-control">
+                    <label for="twitter">Twitter</label>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-6 col-12">
+                <div class="md-form form-group">
+                    <input type="text" th:field="*{socialMediaAddress.instagram}" id="instagram" class="form-control">
+                    <label for="instagram">Instagram</label>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-6 col-12">
+                <div class="md-form form-group">
+                    <input type="text" th:field="*{socialMediaAddress.facebook}" id="facebook" class="form-control">
+                    <label for="facebook">Facebook</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-3">
+            <div class="col-md-4 col-sm-6 col-12">
+                <button id="submitButton" type="submit" class="btn btn-md btn-danger rounded-lg">Save</button>
+            </div>
+        </div>
+
+    </form>
+
+</main>
+
+<!-- Modal -->
+<div class="modal fade" id="addEmployeeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add Employee</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p id="addEmployeeMessage"></p>
+            </div>
+            <div class="modal-footer">
+                <button id="addEmployeeModalDone" type="button" class="btn btn-primary">Done</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Import css-->
+<div th:insert="~{../fragments/scripts :: scripts}"></div>
+
+<script th:inline="javascript">
+
+    (function() {
+        'use strict';
+        window.addEventListener('load', function() {
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            var forms = document.getElementsByClassName('needs-validation');
+            // Loop over them and prevent submission
+            var validation = Array.prototype.filter.call(forms, function(form) {
+                form.addEventListener('submit', function(event) {
+                    if (form.checkValidity() === false) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        }, false);
+    })();
+
+    $('#addEmployeeModal').on('hidden.bs.modal', function () {
+        window.location.href = "/hrportal";
+    });
+
+    $("#addEmployeeModalDone").click(function() {
+        $('#addEmployeeModal').modal('hide');
+    });
+
+    $(document).ready(function () {
+
+        $('#updateEmployeeForm').on('submit',function (e) {
+
+            if (this.checkValidity() === false) {
+
+                e.preventDefault();
+                e.stopPropagation();
+
+            }else{
+
+                e.preventDefault();
+                updateEmployee();
+
+            }
+
+        });
+
+        function updateEmployee() {
+
+            var data = {};
+
+            console.log([[${updateEmployee.address}]]);
+            console.log([[${updateEmployee.address.employeeId}]]);
+
+            let address = {
+                employee_id: [[${updateEmployee.address.employeeId}]],
+                residential: $("#residential").val(),
+                postal: $("#postal").val()
+            };
+
+            let contactDetails = {
+                employee_id: [[${updateEmployee.contactDetails.employeeId}]],
+                landLine: $("#landLine").val(),
+                mobile: $("#mobile").val(),
+                email: $("#email").val()
+            };
+
+            let socialMediaAddress = {
+                employee_id: [[${updateEmployee.socialMediaAddress.employeeId}]],
+                twitter: $("#twitter").val(),
+                instagram: $("#instagram").val(),
+                facebook: $("#facebook").val()
+            };
+
+
+            data["id"] = [[${updateEmployee.id}]];
+            data["employeeNumber"] = [[${updateEmployee.employeeNumber}]];
+            data["firstName"] = $("#firstName").val();
+            data["lastName"] = $("#lastName").val();
+            data["address"] = address;
+            data["contactDetails"] = contactDetails;
+            data["socialMediaAddress"] = socialMediaAddress;
+
+            $.ajax({
+                type: "PUT",
+                url: "/hrportal/save-updated-employee",
+                contentType: "application/json",
+                data: JSON.stringify(data),
+                dataType: 'text',
+                timeout: 600000,
+
+                success: function (response) {
+
+                    if(response){
+                        let employee = JSON.parse(response);
+                        $('#addEmployeeMessage').html(employee.firstName + " successfully saved.");
+                        $('#addEmployeeModal').modal('show');
+                    }else {
+                        toastr["error"]("Unable to update employee.");
+                    }
+                },
+                error: function (response, status, error) {
+                    toastr["error"]("Unable to update employee.");
+                }
+
+            });
+        }
+
+    });
+</script>
+
+</body>
+</html>

@@ -80,6 +80,27 @@ public class EmployeeServiceImpl implements EmployeeService{
     }
 
     @Override
+    public String saveUpdatedEmployee(String employeeDtoJson) {
+        EmployeeDto retValue = new EmployeeDto();
+        String responseBody = null;
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        final String url = hrSystemBaseUrl + "/update";
+
+        HttpHeaders httpHeaders = createHeaders();
+        HttpEntity<String> httpEntity = new HttpEntity<>(employeeDtoJson, httpHeaders);
+
+        ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.PUT, httpEntity, String.class);
+
+        responseBody = response.getBody();
+
+        //retValue = jsonMapper.readValue(responseBody, EmployeeDto.class);
+
+        return responseBody;
+    }
+
+    @Override
     public String deleteEmployee(long id) {
         EmployeeDto retValue = new EmployeeDto();
         String responseBody = null;
@@ -98,6 +119,32 @@ public class EmployeeServiceImpl implements EmployeeService{
         //retValue = jsonMapper.readValue(responseBody, EmployeeDto.class);
 
         return responseBody;
+    }
+
+    @Override
+    public EmployeeDto findEmployeeById(long id) {
+        EmployeeDto retValue = new EmployeeDto();
+        String responseBody = null;
+
+        try {
+            RestTemplate restTemplate = new RestTemplate();
+
+            final String url = hrSystemBaseUrl + "/find/" + id;
+
+            HttpHeaders httpHeaders = createHeaders();
+            HttpEntity<String> httpEntity = new HttpEntity<>(null, httpHeaders);
+
+            ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, httpEntity, String.class);
+
+            responseBody = response.getBody();
+
+            retValue = jsonMapper.readValue(responseBody, EmployeeDto.class);
+
+        }catch (Exception e){
+            //TODO handle error
+        }
+
+        return retValue;
     }
 
     private HttpHeaders createHeaders() {

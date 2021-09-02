@@ -1,11 +1,13 @@
 package com.sars.hrportal.Dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ContactDetailDto {
 
-    private Long employee_id;
+    @JsonProperty("employee_id")
+    private Long employeeId;
     private String landLine;
     private String mobile;
     private String email;
@@ -13,19 +15,19 @@ public class ContactDetailDto {
     public ContactDetailDto() {
     }
 
-    public ContactDetailDto(Long employee_id, String landLine, String mobile, String email) {
-        this.employee_id = employee_id;
+    public ContactDetailDto(Long employeeId, String landLine, String mobile, String email) {
+        this.employeeId = employeeId;
         this.landLine = landLine;
         this.mobile = mobile;
         this.email = email;
     }
 
-    public long getEmployee_id() {
-        return employee_id;
+    public Long getEmployeeId() {
+        return employeeId;
     }
 
-    public void setEmployee_id(Long employee_id) {
-        this.employee_id = employee_id;
+    public void setEmployeeId(Long employeeId) {
+        this.employeeId = employeeId;
     }
 
     public String getLandLine() {
@@ -55,7 +57,7 @@ public class ContactDetailDto {
     @Override
     public String toString() {
         return "ContactDetailDto{" +
-                "employee_id=" + employee_id +
+                "employee_id=" + employeeId +
                 ", landLine='" + landLine + '\'' +
                 ", mobile='" + mobile + '\'' +
                 ", email='" + email + '\'' +

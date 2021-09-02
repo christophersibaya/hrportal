@@ -46,15 +46,32 @@ public class EmployeeController {
         return main(model);
     }
 
+    @GetMapping("/edit/{id}")
+    public String editEmployee(Model model, @PathVariable long id) {
+
+        model.addAttribute("updateEmployee", employeeService.findEmployeeById(id));
+
+        return "update-employee";
+    }
+
     @RequestMapping(value = "/save-employee",
             consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
             produces = MediaType.TEXT_PLAIN_VALUE,
             method = RequestMethod.POST)
     @ResponseBody
-    public String validateAdvisor(@RequestBody String newEmployee, HttpServletRequest request, HttpServletResponse response, HttpSession session) {
+    public String saveEmployee(@RequestBody String newEmployee, HttpServletRequest request, HttpServletResponse response, HttpSession session) {
 
         return employeeService.saveEmployee(newEmployee);
     }
 
+    @RequestMapping(value = "/save-updated-employee",
+            consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
+            produces = MediaType.TEXT_PLAIN_VALUE,
+            method = RequestMethod.PUT)
+    @ResponseBody
+    public String saveUpdatedEmployee(@RequestBody String updatedEmployee, HttpServletRequest request, HttpServletResponse response, HttpSession session) {
+
+        return employeeService.saveEmployee(updatedEmployee);
+    }
 
 }
